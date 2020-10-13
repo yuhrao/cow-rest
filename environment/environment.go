@@ -11,6 +11,7 @@ const (
 func GetString(envName string, defaultValue string) string {
 	if value := os.Getenv(envName); value != "" {
 		return value
+
 	}
 	return defaultValue
 }
