@@ -1,20 +1,15 @@
 package route
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
 var HealthCheckRoute = RouteConfig{
 	Path:   "/api/check",
 	Method: http.MethodGet,
-	Handler: func(w http.ResponseWriter, r *http.Request) {
+	Handler: func(w http.ResponseWriter, r *http.Request, _ interface{}) (statusCode int, responseBody interface{}, err error) {
 
-		w.Header().Add("Content-Type", "application/json")
-
-		w.WriteHeader(200)
-
-		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
+		return http.StatusAccepted, map[string]bool{"ok": true}, nil
 
 	},
 }

@@ -51,19 +51,21 @@ func (router *MuxRouter) Create() http.Handler {
 		log.Warning("No middlewares to register")
 	} else {
 		for _, middleware := range router.middlewares {
+
 			log.WithField("name", middleware.Name()).Warn("Adding middleware to router")
+
 			muxRouter.Use(middleware.Get())
 		}
 	}
 
-	for _, route := range router.routes {
+	for _, routeConfig := range router.routes {
 		log.WithFields(log.Fields{
-			"path":       route.Path,
-			"method":     route.Method,
+			"path":       routeConfig.Path,
+			"method":     routeConfig.Method,
 			"routerType": router.Name(),
 		}).Warn("Adding route to router")
 
-		muxRouter.HandleFunc(route.Path, route.Handler).Methods(route.Method)
+		muxRouter.HandleFunc(routeConfig.Path, route.Handler(routeConfig)).Methods(routeConfig.Method)
 	}
 
 	return muxRouter
