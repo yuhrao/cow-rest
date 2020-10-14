@@ -2,9 +2,11 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	env "github.com/YuhriBernardes/rest_go/environment"
-	mux "github.com/gorilla/mux"
+	"github.com/YuhriBernardes/rest_go/router"
+	"github.com/YuhriBernardes/rest_go/router/route"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -24,21 +26,21 @@ func startLogger() {
 func main() {
 	startLogger()
 
-	router := mux.NewRouter()
-	router.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("Hello World!"))
-	}).Methods(http.MethodGet)
+	routerImpl := &router.MuxRouter{}
+	routerImpl.RegisterRoute(route.HealthCheckRoute)
 
-	listener := &http.Server{
-		Addr:    "0.0.0.0:3000",
-		Handler: router,
+	server := http.Server{
+		Addr:    "0.0.0.0:" + strconv.Itoa(3000),
+		Handler: routerImpl.Create(),
 	}
 
 	log.WithFields(log.Fields{
-		"Host": listener.Addr,
+		"address": server.Addr,
+		"router":  routerImpl.Name(),
 	}).Warn("Starting server")
 
-	listener.ListenAndServe()
+	if err := server.ListenAndServe(); err != nil {
+		log.WithField("error", err).Error("Failed to start server")
+	}
 
 }
