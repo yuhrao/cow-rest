@@ -1,14 +1,18 @@
 package main
 
 import (
-	"net/http"
-	"strconv"
+	"sync"
 
 	env "github.com/YuhriBernardes/rest_go/environment"
 	"github.com/YuhriBernardes/rest_go/middleware"
 	"github.com/YuhriBernardes/rest_go/router"
 	"github.com/YuhriBernardes/rest_go/router/route"
+	"github.com/YuhriBernardes/rest_go/server"
 	log "github.com/sirupsen/logrus"
+)
+
+var (
+	once = sync.Once{}
 )
 
 func startLogger() {
@@ -22,6 +26,7 @@ func startLogger() {
 		log.SetFormatter(&log.JSONFormatter{})
 		log.SetLevel(log.InfoLevel)
 	}
+
 }
 
 func main() {
@@ -32,18 +37,11 @@ func main() {
 
 	routerImpl.RegisterMiddleware(middleware.RequestLogger{})
 
-	server := http.Server{
-		Addr:    "0.0.0.0:" + strconv.Itoa(3000),
-		Handler: routerImpl.Create(),
-	}
+	srvr := &server.Server{}
 
-	log.WithFields(log.Fields{
-		"address": server.Addr,
-		"router":  routerImpl.Name(),
-	}).Warn("Starting server")
+	srvr.Init(3000, routerImpl)
 
-	if err := server.ListenAndServe(); err != nil {
+	if err := srvr.Start(); err != nil {
 		log.WithField("error", err).Error("Failed to start server")
 	}
-
 }
