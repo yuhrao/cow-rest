@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	env "github.com/YuhriBernardes/rest_go/environment"
+	"github.com/YuhriBernardes/rest_go/middleware"
 	"github.com/YuhriBernardes/rest_go/router"
 	"github.com/YuhriBernardes/rest_go/router/route"
 	log "github.com/sirupsen/logrus"
@@ -28,6 +29,8 @@ func main() {
 
 	routerImpl := &router.MuxRouter{}
 	routerImpl.RegisterRoute(route.HealthCheckRoute)
+
+	routerImpl.RegisterMiddleware(middleware.RequestLogger{})
 
 	server := http.Server{
 		Addr:    "0.0.0.0:" + strconv.Itoa(3000),

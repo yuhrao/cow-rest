@@ -5,13 +5,24 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/YuhriBernardes/rest_go/middleware"
 	"github.com/YuhriBernardes/rest_go/router/route"
 	"github.com/gorilla/mux"
 )
 
 type MuxRouter struct {
 	routes      []route.RouteConfig
-	middlewares []mux.MiddlewareFunc
+	middlewares []middleware.MuxMiddleware
+}
+
+func (router *MuxRouter) RegisterMiddleware(muxMiddleware middleware.MuxMiddleware) {
+	if router.middlewares == nil {
+		router.middlewares = make([]middleware.MuxMiddleware, 0)
+	}
+
+	log.WithField("middleware", muxMiddleware.Name()).Info("Adding middleware")
+
+	router.middlewares = append(router.middlewares, muxMiddleware)
 }
 
 func (router *MuxRouter) Name() string {
@@ -35,6 +46,15 @@ func (router *MuxRouter) RegisterRoute(routeConfig route.RouteConfig) error {
 
 func (router *MuxRouter) Create() http.Handler {
 	muxRouter := mux.NewRouter()
+
+	if router.middlewares == nil {
+		log.Warning("No middlewares to register")
+	} else {
+		for _, middleware := range router.middlewares {
+			log.WithField("name", middleware.Name()).Warn("Adding middleware to router")
+			muxRouter.Use(middleware.Get())
+		}
+	}
 
 	for _, route := range router.routes {
 		log.WithFields(log.Fields{
