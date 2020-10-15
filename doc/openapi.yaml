@@ -1,0 +1,103 @@
+---
+openapi: "3.0.0"
+info:
+  title: "Cow Rest"
+  description: "A REST API interface for cowsay"
+  contact:
+    name: "Yuhri Graziano Bernardes"
+    email: "yuhri.graziano@gmail.com"
+  license:
+    name: "MIT"
+    url: "https://en.wikipedia.org/wiki/MIT_License"
+  version: "1.0.0"
+
+servers:
+  - url: "https://virtserver.swaggerhub.com/Yuhri-Bernardes/cowrest/1.0.0"
+    description: "SwaggerHub API Auto Mocking"
+
+paths:
+  /api/cows:
+    get:
+      summary: "Get all available cows to use in API"
+      responses:
+        "200":
+          description: "Response for cow list request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CowListBody"
+  /api/cows/{cowtype}:
+    get:
+      summary: "Execute a cowsay for the given cow"
+      operationId: "cowsay"
+      parameters:
+        - name: "cowtype"
+          in: "path"
+          description: "Select wich cow will be the speaker"
+          required: true
+          style: "simple"
+          explode: false
+          schema:
+            type: "string"
+          example: "moofasa"
+      responses:
+        "200":
+          description: "Generate a cowsay ASCII image"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              example:
+                "________________\n< hello from cow >\n ----------------\n\
+                \      \\   ^__^\n       \\  (oo)\\_______\n          (__)\\     \
+                \  )\\/\\\n              ||----w |\n              ||     ||\n"
+components:
+  schemas:
+    CowListBody:
+      type: "array"
+      description: "List of available cows"
+      example:
+        - "deafault"
+        - "moofasa"
+        - "kosh"
+        - "koala"
+      items:
+        type: "string"
+  responses:
+    cowListResponse:
+      description: "Response for cow list request"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CowListBody"
+    cowSay:
+      description: "Generate a cowsay ASCII image"
+      content:
+        text/plain:
+          schema:
+            type: "string"
+          example:
+            "________________\n< hello from cow >\n ----------------\n    \
+            \  \\   ^__^\n       \\  (oo)\\_______\n          (__)\\       )\\/\\\n\
+            \              ||----w |\n              ||     ||\n"
+  parameters:
+    saySchema:
+      name: "text"
+      in: "query"
+      description: "Text to be included on cowsay"
+      required: true
+      style: "form"
+      explode: true
+      schema:
+        type: "string"
+      example: "Hello from cowsay"
+    cowType:
+      name: "cowtype"
+      in: "path"
+      description: "Select wich cow will be the speaker"
+      required: true
+      style: "simple"
+      explode: false
+      schema:
+        type: "string"
+      example: "moofasa"
