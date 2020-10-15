@@ -5,8 +5,8 @@ import (
 
 	env "github.com/YuhriBernardes/rest_go/environment"
 	"github.com/YuhriBernardes/rest_go/middleware"
+	"github.com/YuhriBernardes/rest_go/route"
 	"github.com/YuhriBernardes/rest_go/router"
-	"github.com/YuhriBernardes/rest_go/router/route"
 	"github.com/YuhriBernardes/rest_go/server"
 	log "github.com/sirupsen/logrus"
 )
@@ -34,6 +34,8 @@ func main() {
 
 	routerImpl := &router.MuxRouter{}
 	routerImpl.RegisterRoute(route.HealthCheckRoute)
+	routerImpl.RegisterRoute(route.GetCows)
+	routerImpl.RegisterRoute(route.GetCowsay)
 
 	routerImpl.RegisterMiddleware(middleware.RequestLogger{})
 

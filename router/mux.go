@@ -6,7 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/YuhriBernardes/rest_go/middleware"
-	"github.com/YuhriBernardes/rest_go/router/route"
+	"github.com/YuhriBernardes/rest_go/route"
 	"github.com/gorilla/mux"
 )
 

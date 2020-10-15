@@ -43,13 +43,21 @@ func Handler(route RouteConfig) http.HandlerFunc {
 
 		statusCode, response, _ := route.Handler(w, r, entity)
 
-		if response != nil {
-
+		contentType := w.Header().Get("Content-Type")
+		if contentType == "" {
+			contentType = "application/json"
 			w.Header().Add("Content-Type", "application/json")
+		}
+
+		if contentType == "application/json" {
+
 			w.WriteHeader(statusCode)
 
 			json.NewEncoder(w).Encode(response)
 
+		} else if contentType == "text/plain" {
+			w.WriteHeader(statusCode)
+			w.Write([]byte(response.(string)))
 		} else {
 			w.WriteHeader(statusCode)
 		}

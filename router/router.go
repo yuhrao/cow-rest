@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/YuhriBernardes/rest_go/middleware"
-	"github.com/YuhriBernardes/rest_go/router/route"
+	"github.com/YuhriBernardes/rest_go/route"
 )
 
 type Router interface {
