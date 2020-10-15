@@ -1,4 +1,5 @@
 # Cow Rest
+![go-version](https://img.shields.io/github/go-mod/go-version/YuhriBernardes/cow-rest)
 
 A REST API interface to use [ `cowsay` ](https://github.com/schacon/cowsay)
 - [Cow Rest](#cow-rest)
