@@ -34,11 +34,13 @@ Enter the binary location and run
 
 ## API documentation
 
-You can find an OpenAPI spec in `doc/` folder. You can use one of the tools below:
+You can get the API Docs on [this link](https://app.swaggerhub.com/apis/Yuhri-Bernardes/cowrest/1.0.0)
+
+The OpenAPI specs can be found in `doc/` folder. You can use one of the tools below for visualization:
 
 - [Postman](https://www.postman.com)
 - [Insomnia Designer](https://insomnia.rest/download/)
-- [SwaggerUI](https://app.swaggerhub.com/apis/Yuhri-Bernardes/cowrest/1.0.0) (only need your browser)
+
 
 
 ## Next steps
