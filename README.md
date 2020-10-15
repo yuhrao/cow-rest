@@ -23,7 +23,9 @@ To build the app, run `go build -o cowrest ./main.go`
 
 ### Using the binary
 
-Enter the binary location and run
+You can find the binaries for download on [releases page](https://github.com/YuhriBernardes/cow-rest/releases)
+
+Enter the binary location and run.
 
 **linux**: `./cowrest`
 
